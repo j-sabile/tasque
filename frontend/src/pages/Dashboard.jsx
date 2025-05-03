@@ -37,13 +37,13 @@ const Dashboard = () => {
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h1>My Tasks</h1>
+        <h1 className="text-6xl font-semibold">My Tasks</h1>
         <AddTaskModal refresh={loadTasks} />
       </div>
-      <h2>Pending</h2>
+      <h2 className="text-3xl m-4 font-semibold">Pending</h2>
       <DisplayTasks tasks={tasks?.filter((e) => !e.completed)} handleComplete={handleComplete} handleDelete={handleDelete} />
 
-      <h2>Completed</h2>
+      <h2 className="text-3xl m-4 font-semibold">Completed</h2>
       <DisplayTasks tasks={tasks?.filter((e) => e.completed)} handleDelete={handleDelete} />
     </div>
   );

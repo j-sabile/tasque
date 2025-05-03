@@ -20,7 +20,7 @@ export default function AddTaskModal({ refresh }) {
 
   return (
     <div style={{ right: "0" }}>
-      <button onClick={() => setIsOpen(true)}>Add</button>
+      <button className="text-white bg-red-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-blue-800" onClick={() => setIsOpen(true)}>Add</button>
       <ReactModal
         isOpen={isOpen}
         onAfterClose={() => setTaskName("")}
@@ -47,7 +47,7 @@ export default function AddTaskModal({ refresh }) {
           },
         }}
       >
-        <form style={{ display: "flex", flexDirection: "column", gap: "24px" }} onSubmit={addTask}>
+        <form className="flex flex-col gap-6" onSubmit={addTask}>
           <h2>Add a Task</h2>
           <input
             type="text"
