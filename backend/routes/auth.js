@@ -1,6 +1,7 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import User from "../models/user.js";
+import jwt from "jsonwebtoken";
 import { authenticate } from "../middleware/auth.js";
 
 const router = express.Router();
@@ -34,6 +35,8 @@ router.post("/login", async (req, res) => {
     if (!isMatch) return res.status(401).json({ error: "Invalid credentials" });
 
     // place authentication mechanism here (log in the user)
+    const token = jwt.sign({ userId: user._id, userRole: user.role }, "HELLO WORLD");
+    res.cookie("jwt", token, { httpOnly: true });
 
     res.json({ message: "Login successful" });
   } catch (error) {
@@ -44,6 +47,7 @@ router.post("/login", async (req, res) => {
 
 router.post("/logout", (req, res) => {
   // place authentication mechanism here (log out the user)
+  res.clearCookie("jwt");
 
   return res.status(200).json({ message: "Logout successful" });
 });
