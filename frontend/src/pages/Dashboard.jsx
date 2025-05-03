@@ -7,25 +7,31 @@ const Dashboard = () => {
 
   useEffect(() => {
     loadTasks();
-  });
+    setInterval(() => {
+      loadTasks();
+    }, 5000);
+  }, []);
 
   const loadTasks = async () => {
-    const res = await fetch("http://localhost:5000/tasks/");
+    const res = await fetch(`${import.meta.env.VITE_API}/tasks/`, { credentials: "include" });
     if (!res.ok) return;
     const data = await res.json();
     setTasks(data);
   };
 
   const handleDelete = async (id) => {
-    await fetch(`http://localhost:5000/tasks/${id}`, { method: "DELETE" });
+    await fetch(`${import.meta.env.VITE_API}/tasks/${id}`, { method: "DELETE", credentials: "include" });
+    loadTasks();
   };
 
   const handleComplete = async (id) => {
-    await fetch(`http://localhost:5000/tasks/${id}`, {
+    await fetch(`${import.meta.env.VITE_API}/tasks/${id}`, {
       method: "PATCH",
+      credentials: "include",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ completed: true }),
     });
+    loadTasks();
   };
 
   return (

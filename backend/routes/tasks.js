@@ -40,12 +40,14 @@ router.patch("/:id", async (req, res) => {
   try {
     const task = await Task.findById(taskId);
     if (!task) return res.status(404).json({ error: "Task not found" });
-    if (userRole !== USER_TYPES.ADMIN && task.creator.toString() !== userId) return res.status(403).json({ error: "Forbidden" });
+    if (userRole !== USER_TYPES.ADMIN && task.createdBy.toString() !== userId) return res.status(403).json({ error: "Forbidden" });
     if (completed !== undefined) task.completed = completed;
     if (title !== undefined) task.title = title;
     await task.save();
     res.status(200).json({ message: "Task updated" });
   } catch (err) {
+    console.error(err.message)
+
     res.status(500).json({ error: "Server error" });
   }
 });
@@ -61,6 +63,7 @@ router.delete("/:id", async (req, res) => {
     await Task.findByIdAndDelete(taskId);
     res.status(200).json({ message: "Task deleted" });
   } catch (err) {
+    console.error(err.message)
     res.status(500).json({ error: "Server error" });
   }
 });

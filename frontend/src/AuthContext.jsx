@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
   const checkAuthStatus = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/auth/status", {
+      const response = await fetch(`${import.meta.env.VITE_API}/auth/status`, {
         credentials: "include",
       });
 
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      const response = await fetch("http://localhost:5000/auth/login", {
+      const response = await fetch(`${import.meta.env.VITE_API}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials),
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
     console.log(credentials);
 
     try {
-      const response = await fetch("http://localhost:5000/auth/register", {
+      const response = await fetch(`${import.meta.env.VITE_API}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials),
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await fetch("http://localhost:5000/auth/logout", {
+      await fetch("${import.meta.env.VITE_API}/auth/logout", {
         method: "POST",
         credentials: "include",
       });

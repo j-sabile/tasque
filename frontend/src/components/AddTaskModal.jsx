@@ -8,9 +8,10 @@ export default function AddTaskModal({ refresh }) {
 
   const addTask = async (e) => {
     e.preventDefault();
-    await fetch("http://localhost:5000/tasks/", {
+    await fetch(`${import.meta.env.VITE_API}/tasks/`, {
       method: "POST",
       credentials: "include",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title: taskName }),
     });
     setIsOpen(false);
