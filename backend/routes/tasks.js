@@ -1,15 +1,16 @@
 import express from "express";
 import Task from "../models/task.js";
 import { authenticate } from "../middleware/auth.js";
+import { USER_TYPES } from "../config/constants.js";
 
 const router = express.Router();
 
-router.use(authenticate);
+router.use(authenticate); // middleware
 
 router.get("/", async (req, res) => {
   try {
     const { userId, userRole } = req.user;
-    const filter = userRole === "user" ? { createdBy: userId } : {};
+    const filter = userRole === USER_TYPES.USER ? { createdBy: userId } : {};
     const tasks = await Task.find(filter);
     res.json(tasks);
   } catch (error) {
@@ -39,7 +40,7 @@ router.patch("/:id", async (req, res) => {
   try {
     const task = await Task.findById(taskId);
     if (!task) return res.status(404).json({ error: "Task not found" });
-    if (userRole !== "admin" && task.creator.toString() !== userId) return res.status(403).json({ error: "Forbidden" });
+    if (userRole !== USER_TYPES.ADMIN && task.creator.toString() !== userId) return res.status(403).json({ error: "Forbidden" });
     if (completed !== undefined) task.completed = completed;
     if (title !== undefined) task.title = title;
     await task.save();
@@ -56,7 +57,7 @@ router.delete("/:id", async (req, res) => {
   try {
     const task = await Task.findById(taskId);
     if (!task) return res.status(404).json({ error: "Task not found" });
-    if (userRole !== "admin" && task.createdBy.toString() !== userId) return res.status(403).json({ error: "Forbidden" });
+    if (userRole !== USER_TYPES.ADMIN && task.createdBy.toString() !== userId) return res.status(403).json({ error: "Forbidden" });
     await Task.findByIdAndDelete(taskId);
     res.status(200).json({ message: "Task deleted" });
   } catch (err) {

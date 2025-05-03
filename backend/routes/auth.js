@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import User from "../models/user.js";
 import jwt from "jsonwebtoken";
 import { authenticate } from "../middleware/auth.js";
+import { SECRET_KEY } from "../config/config.js";
 
 const router = express.Router();
 
@@ -35,7 +36,7 @@ router.post("/login", async (req, res) => {
     if (!isMatch) return res.status(401).json({ error: "Invalid credentials" });
 
     // place authentication mechanism here (log in the user)
-    const token = jwt.sign({ userId: user._id, userRole: user.role }, "HELLO WORLD");
+    const token = jwt.sign({ userId: user._id, userRole: user.role }, SECRET_KEY);
     res.cookie("jwt", token, { httpOnly: true });
 
     res.json({ message: "Login successful" });
